@@ -18,6 +18,8 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     
     faceFilePattern = fullfile(session.stim.face.folderPath, char(strcat('*', session.stim.fileExtension));
     houseFilePattern = fullfile(session.stim.house.folderPath, char(strcat('*', session.stim.fileExtension));
+    halfStimSize = 238/2; % visual degree 6X6
+    session.stim.location = round([session.windowRect(3:4)/2-halfStimSize, session.windowRect(3:4)/2+halfStimSize]);
     
     session.stim.faces.fileNames = dir(faceFilePattern);
     for i = 1:size(session.stim.faces.fileNames)
