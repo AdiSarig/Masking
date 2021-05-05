@@ -1,69 +1,68 @@
 
-function runTrial(stimulus, isTypeA, hasProbe, session)
-    % check framerate
-    % flip_interval = Screen('GetFlipInterval', session.window);
-    % ms * fps = frames
-    % ms / flip_interval = frames
+function runTrial(isTypeA, hasProbe, session)
+% check framerate
+% flip_interval = Screen('GetFlipInterval', session.window);
+% ms * fps = frames
+% ms / flip_interval = frames
 
-    dispCross(session);
-    vbl = Screen('Flip', session.window);
-    % waitFrames(.705/flip_interval, session);
-    %wait 705 ms
+dispCross(session);
+vbl = Screen('Flip', session.window);
+% waitFrames(.705/flip_interval, session);
+%wait 705 ms
 
-    dispCheckerboard(session);
-    dispCross(session);
-    WaitSecs('UntilTime', vbl + .705);
-    vbl = Screen('Flip', session.window);
-    % waitFrames(.096/flip_interval, session);
-    %wait 96 ms
-
-    
-    if isTypeA
-        dispCross(session);
-        WaitSecs('UntilTime', vbl + .096);
-        vbl = Screen('Flip', session.window);
-        % waitFrames(.096/flip_interval, session);
-        %wait 96
-    end
-
-    if hasProbe
-        dispProbe(session);
-    end
+dispCheckerboard(session);
+dispCross(session);
+WaitSecs('UntilTime', vbl + .705);
+vbl = Screen('Flip', session.window);
+% waitFrames(.096/flip_interval, session);
+%wait 96 ms
 
 
-    dispStimulus(session);
-    dispCross(session);
-    WaitSecs('UntilTime', vbl + .096);
-    vbl = Screen('Flip', session.window);
-    % waitFrames(.033/flip_interval, session);
-    %wait 33
-
-
-    if hasProbe
-        dispProbe(session);
-    end
-
-    if isTypeA
-        dispCross(session);
-        dispCross(session);
-        WaitSecs('UntilTime', vbl + .033);
-        vbl = Screen('Flip', session.window);
-        % waitFrames(.096/flip_interval, session);
-        %wait 96
-    end
-
-    if hasProbe
-        dispProbe(session);
-    end
-
-
-    dispCheckerboard(session);
+if isTypeA
     dispCross(session);
     WaitSecs('UntilTime', vbl + .096);
     vbl = Screen('Flip', session.window);
     % waitFrames(.096/flip_interval, session);
-    %wait 96 ms
+    %wait 96
+end
 
+dispStimulus(session);
+dispCross(session);
+
+    if hasProbe
+        dispProbe(session);
+    end
+
+WaitSecs('UntilTime', vbl + .096);
+vbl = Screen('Flip', session.window);
+% waitFrames(.033/flip_interval, session);
+%wait 33
+
+if isTypeA
+    dispCross(session);
+    if hasProbe
+        dispProbe(session);
+    end
+    WaitSecs('UntilTime', vbl + .033);
+    vbl = Screen('Flip', session.window);
+    % waitFrames(.096/flip_interval, session);
+    %wait 96
+end
+
+dispCheckerboard(session);
+dispCross(session);
+
+
+if isTypeA
     WaitSecs('UntilTime', vbl + .096);
+else
+    WaitSecs('UntilTime', vbl + .033);
+end
+
+vbl = Screen('Flip', session.window);
+% waitFrames(.096/flip_interval, session);
+%wait 96 ms
+
+WaitSecs('UntilTime', vbl + .096);
 
 end

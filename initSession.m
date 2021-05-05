@@ -16,28 +16,38 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     session.stim.house.folderPath = 'houseStim';
     session.stim.fileExtension = '.pcx';
     
-    faceFilePattern = fullfile(session.stim.face.folderPath, char(strcat('*', session.stim.fileExtension));
-    houseFilePattern = fullfile(session.stim.house.folderPath, char(strcat('*', session.stim.fileExtension));
     halfStimSize = 238/2; % visual degree 6X6
     session.stim.location = round([session.windowRect(3:4)/2-halfStimSize, session.windowRect(3:4)/2+halfStimSize]);
     
-    session.stim.faces.fileNames = dir(faceFilePattern);
-    for i = 1:size(session.stim.faces.fileNames)
-        [img, color_map] = imread(session.stim.faces.fileNames(i));
+    faceFilePattern = fullfile(session.stim.face.folderPath, char(strcat('*', session.stim.fileExtension)));
+    houseFilePattern = fullfile(session.stim.house.folderPath, char(strcat('*', session.stim.fileExtension)));
+    
+    session.stim.face.fileNames = dir(faceFilePattern);
+    for i = 1:size(session.stim.face.fileNames)
+        imPath = sprintf('%s%c%s',session.stim.face.fileNames(i).folder, filesep, session.stim.face.fileNames(i).name);
+        [img, color_map] = imread(imPath);
         img = addNoise(img, .25);
-        session.stim.faces.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
+        session.stim.face.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
     end
 
     session.stim.house.fileNames = dir(houseFilePattern);
     for i = 1:size(session.stim.house.fileNames)
-        [img, color_map] = imread(session.stim.house.fileNames(i));
+        imPath = sprintf('%s%c%s',session.stim.house.fileNames(i).folder, filesep, session.stim.house.fileNames(i).name);
+        [img, color_map] = imread(imPath);
         img = addNoise(img, .25);
         session.stim.house.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
     end
-        
+       
+    % Create noise stimuli
+    for i = 1:size(session.stim.house.fileNames)
+        imPath = sprintf('%s%c%s',session.stim.house.fileNames(i).folder, filesep, session.stim.house.fileNames(i).name);
+        [img, color_map] = imread(imPath);
+        img = addNoise(img, .5);
+        session.stim.noise.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
+    end
     
     for i = 1:totalBlocks
-        session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures);
+        session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures, session.stim.noise.textures);
     end
     
     % allTrials = initTrialInfo(AtrialsPerBlock*totalBlocks, BtrialsPerBlock*totalBlocks, probeTrialsPerBlock*totalBlocks)
@@ -102,7 +112,7 @@ end
 function noised = addNoise(img, noiseRatio)
     shape = size(img);
     totalPix = shape(1)*shape(2);
-    toFlip = datasample(1:total_pix, round(total_pix*noiseRatio), 'Replace',false);
+    toFlip = datasample(1:totalPix, round(totalPix*noiseRatio), 'Replace',false);
     img(toFlip) = 255 * ~img(toFlip);
     
     noised = img;
