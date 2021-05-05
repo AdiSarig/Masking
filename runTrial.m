@@ -29,9 +29,9 @@ end
 dispStimulus(session);
 dispCross(session);
 
-    if hasProbe
-        dispProbe(session);
-    end
+if hasProbe
+    xy_loc = dispProbe(session, []);
+end
 
 WaitSecs('UntilTime', vbl + .096);
 vbl = Screen('Flip', session.window);
@@ -41,7 +41,7 @@ vbl = Screen('Flip', session.window);
 if isTypeA
     dispCross(session);
     if hasProbe
-        dispProbe(session);
+        dispProbe(session, xy_loc);
     end
     WaitSecs('UntilTime', vbl + .033);
     vbl = Screen('Flip', session.window);
@@ -52,6 +52,9 @@ end
 dispCheckerboard(session);
 dispCross(session);
 
+if hasProbe
+    dispProbe(session, xy_loc);
+end
 
 if isTypeA
     WaitSecs('UntilTime', vbl + .096);
