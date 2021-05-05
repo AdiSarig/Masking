@@ -49,13 +49,14 @@ end
 
 % [WARNING]: Probe occurance random. Not ballanced between trials A and B
 % [WARNING]: Face/house/noise occurance random. Not ballanced between trials A and B
-function allTrials = initTrialInfo(totalAtrials, totalBtrials, faceTextures, houseTextures)
+function allTrials = initTrialInfo(totalAtrials, totalBtrials, totalProbeTrials, faceTextures, houseTextures, noiseTextures)
     totalTrials = totalAtrials + totalBtrials;
     % check there is the right number of stimuli
     faceTexturesShape = size(faceTextures);
     houseTexturesShape = size(houseTextures);
-    if totalTrials ~= 2*faceTexturesShape(2) + houseTexturesShape(2)
-        error(strcat('Error: expected totalFaceTextures = totalHouseTextures = trialsPerBlock/3 but found: ', string(totalFaceTextures), ' face textures, ', string(totalHouseTextures), ' house textures for ', string(totalTrials), ' trialsPerBlock'));
+    noiseTexturesShape = size(noiseTextures);
+    if totalTrials ~= 4*(faceTexturesShape(2) + houseTexturesShape(2) + noiseTexturesShape(2))
+        error(strcat('Error: expected totalFaceTextures = totalHouseTextures = totalNoiseTextures = trialsPerBlock/12 but found: ', string(faceTexturesShape(2)), ' face textures, ', string(houseTexturesShape(2)), ' house textures, and ', string(noiseTexturesShape(2)),'noise textures for ', string(totalTrials), ' trialsPerBlock'));
     end
     
     for i = 1:totalAtrials
@@ -71,11 +72,17 @@ function allTrials = initTrialInfo(totalAtrials, totalBtrials, faceTextures, hou
     end
     
     
-    trials = trials(randperm(totalTrials));
+%     trials = trials(randperm(totalTrials));
 
-    trials(:).stimulus.texture = [ faceTextures houseTextures addNoise(faceTextures, .5)];
-    trials(:).stimulus.type = [ repmat('face',[1 faceTexturesShape(2)]) repmat('house',[1 houseTexturesShape(2)]) repmat('noise',[1 faceTexturesShape(2)])];
+%     trials(:).stimulus.texture = [ faceTextures houseTextures addNoise(faceTextures, .5)];
+%     trials(:).stimulus.type = [ repmat('face',[1 faceTexturesShape(2)]) repmat('house',[1 houseTexturesShape(2)]) repmat('noise',[1 faceTexturesShape(2)])];
     
+    textures = num2cell(repmat([ faceTextures houseTextures noiseTextures],1,4));
+    types = repmat(repelem({'face', 'house', 'noise'},1,12),1,4);
+
+    [trials(:).stimulusTexture] = textures{:};
+    [trials(:).stimulusType] = types{:};
+
     allTrials = trials(randperm(totalTrials));
     
 end
