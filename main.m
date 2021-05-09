@@ -34,9 +34,9 @@ screens = Screen('Screens');
 screenNumber = max(screens);
 bgColour     =  GrayIndex(screenNumber);
 
-[w, windowRect] = PsychImaging('OpenWindow', screenNumber, 0.5);
-% [w, windowRect] = PsychImaging('OpenWindow', screenNumber, 0.5, [0 0 1000 800]);
-HideCursor;
+% [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour);
+[w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour, [0 0 1000 800]);
+% HideCursor;
 Screen('TextSize', w, 40);
 
 session = initSession(subjectID, sessionID, 5, 72, 72, 10, w, windowRect, round(bgColour*255));
