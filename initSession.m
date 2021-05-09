@@ -1,8 +1,9 @@
-function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, w, windowRect)
+function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, w, windowRect, bg)
     trialsPerBlock = AtrialsPerBlock + BtrialsPerBlock;
     
     session.window = w;
     session.windowRect = windowRect;
+    session.center = [windowRect(3)/2, windowRect(4)/2];
     session.subjectID = subjectID;
     session.sessionID = sessionID;
     session.CreationTime = datestr(now);
@@ -61,6 +62,21 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     for i = 1:totalBlocks
         session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures, session.stim.noise.textures);
     end
+    
+    % create pixel triggers
+    vpix_trig=uint8([bg+2 bg-2 bg+2 bg-2 bg+2 bg-2 bg+2 bg-2,...
+        bg+2 bg-3 bg+2 bg-3 bg+2 bg-3 bg+2 bg-3,...
+        bg+3 bg-2 bg+3 bg-2 bg+3 bg-2 bg+3 bg-2;...
+        bg+2 bg-2 bg+2 bg-2 bg+2 bg-2 bg+2 bg-2,...
+        bg+2 bg-3 bg+2 bg-3 bg+2 bg-3 bg+2 bg-3,...
+        bg+3 bg-2 bg+3 bg-2 bg+3 bg-2 bg+3 bg-2;...
+        bg+2 bg-2 bg+2 bg-2 bg+2 bg-2 bg+2 bg-2,...
+        bg+2 bg-3 bg+2 bg-3 bg+2 bg-3 bg+2 bg-3,...
+        bg+3 bg-2 bg+3 bg-2 bg+3 bg-2 bg+3 bg-2]);
+    
+    session.stim.triggers.image = vpix_trig(:,1:8);       % image trigger
+    session.stim.triggers.fix = vpix_trig(:,9:16);        % fixation trigger
+    session.stim.triggers.mask = vpix_trig(:,17:24);      % mask trigger
     
     % allTrials = initTrialInfo(AtrialsPerBlock*totalBlocks, BtrialsPerBlock*totalBlocks, probeTrialsPerBlock*totalBlocks)
     % for i = 1:totalBlocks
