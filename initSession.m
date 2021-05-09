@@ -20,6 +20,10 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     session.instructions.fileExtension = '.tif';
     session.instructions.font = 'Comic Sans MS';
     session.instructions.colour = 0;
+    session.timing.fix1Dur = 0.704;
+    session.timing.CFixDur = 0.096;
+    session.timing.maskDur = 0.096;
+    session.timing.stimDur = 0.033;
     
     halfStimSize = 238/2; % visual degree 6X6
     session.stim.location = round([session.windowRect(3:4)/2-halfStimSize, session.windowRect(3:4)/2+halfStimSize]);

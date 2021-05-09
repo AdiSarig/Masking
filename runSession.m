@@ -10,7 +10,7 @@ while session.current.blockNum <= session.totalBlocks
         end
         
         trialInfo = session.blocks(session.current.blockNum).trials(session.current.trialNum);
-        runTrial(trialInfo.isTypeA, trialInfo.hasProbe, session);
+        session = runTrial(trialInfo.isTypeA, trialInfo.hasProbe, session);
         
         session.current.trialNum = session.current.trialNum + 1;
     end
