@@ -9,12 +9,13 @@ while session.current.blockNum <= session.totalBlocks
             return
         end
         
-        
         trialInfo = session.blocks(session.current.blockNum).trials(session.current.trialNum);
         runTrial(trialInfo.isTypeA, trialInfo.hasProbe, session);
         
         session.current.trialNum = session.current.trialNum + 1;
     end
+    % self paced break at the end of each block
+    dispBreak(session);
     session.current.blockNum = session.current.blockNum + 1;
     session.current.trialNum = 1;
 end
