@@ -1,7 +1,7 @@
 function abortSession = dispIntermission(session)
     % disp a message
-    message = strcat(session.intermissionText, '\n\nBlock: ', string(session.current.blockNum), '/', string(session.totalBlocks), '        Trial:', string(session.current.trialNum), '/', string(session.trialsPerBlock));
-    DrawFormattedText(session.window, char(message), 'center', 'center', 1);
+    message = strcat(session.instructions.intermissionText, '\n\nBlock: ', string(session.current.blockNum), '/', string(session.totalBlocks), '        Trial:', string(session.current.trialNum), '/', string(session.trialsPerBlock));
+    DrawFormattedText(session.window, char(message), 'center', 'center', session.instructions.colour);
     Screen('Flip', session.window);
 
     % if shift+A => abort, else => continue
