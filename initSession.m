@@ -15,6 +15,10 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     session.stim.face.folderPath = 'faceStim';
     session.stim.house.folderPath = 'houseStim';
     session.stim.fileExtension = '.pcx';
+    session.instructions.folderPath = 'instructions';
+    session.instructions.fileExtension = '.tif';
+    session.instructions.font = 'Comic Sans MS';
+    session.instructions.colour = 0;
     
     halfStimSize = 238/2; % visual degree 6X6
     session.stim.location = round([session.windowRect(3:4)/2-halfStimSize, session.windowRect(3:4)/2+halfStimSize]);
@@ -45,6 +49,14 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
         img = addNoise(img, .5);
         session.stim.noise.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
     end
+    
+    infoFilePattern = fullfile(session.instructions.folderPath, char(strcat('*', session.instructions.fileExtension)));
+    infofileNames = dir(infoFilePattern);
+    breakPath = sprintf('%s%c%s',infofileNames(1).folder, filesep, 'break.tif');
+    breakImg = imread(breakPath);
+    session.instructions.breakTex = Screen('MakeTexture', session.window, breakImg);
+    
+    Screen('TextFont', session.window ,session.instructions.font);
     
     for i = 1:totalBlocks
         session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures, session.stim.noise.textures);
