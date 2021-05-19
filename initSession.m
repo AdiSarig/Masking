@@ -34,25 +34,25 @@ function session = initSession(subjectID, sessionID, totalBlocks, AtrialsPerBloc
     session.stim.face.fileNames = dir(faceFilePattern);
     for i = 1:size(session.stim.face.fileNames)
         imPath = sprintf('%s%c%s',session.stim.face.fileNames(i).folder, filesep, session.stim.face.fileNames(i).name);
-        [img, color_map] = imread(imPath);
-        img = addNoise(img, .25);
-        session.stim.face.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
+        img = imread(imPath);
+        img = addNoise(img, .25, 80);
+        session.stim.face.textures(i) = Screen('MakeTexture', session.window, img);
     end
 
     session.stim.house.fileNames = dir(houseFilePattern);
     for i = 1:size(session.stim.house.fileNames)
         imPath = sprintf('%s%c%s',session.stim.house.fileNames(i).folder, filesep, session.stim.house.fileNames(i).name);
-        [img, color_map] = imread(imPath);
-        img = addNoise(img, .25);
-        session.stim.house.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
+        img = imread(imPath);
+        img = addNoise(img, .25, 80);
+        session.stim.house.textures(i) = Screen('MakeTexture', session.window, img);
     end
        
     % Create noise stimuli
     for i = 1:size(session.stim.house.fileNames)
         imPath = sprintf('%s%c%s',session.stim.house.fileNames(i).folder, filesep, session.stim.house.fileNames(i).name);
-        [img, color_map] = imread(imPath);
-        img = addNoise(img, .5);
-        session.stim.noise.textures(i) = Screen('MakeTexture', session.window, ind2rgb(img, color_map));
+        img = imread(imPath);
+        img = addNoise(img, .5, 80);
+        session.stim.noise.textures(i) = Screen('MakeTexture', session.window, img);
     end
     
     infoFilePattern = fullfile(session.instructions.folderPath, char(strcat('*', session.instructions.fileExtension)));
@@ -141,11 +141,14 @@ end
 %
 
 
-function noised = addNoise(img, noiseRatio)
+function noised = addNoise(img, noiseRatio, gray)
     shape = size(img);
     totalPix = shape(1)*shape(2);
     toFlip = datasample(1:totalPix, round(totalPix*noiseRatio), 'Replace',false);
     img(toFlip) = 255 * ~img(toFlip);
+    
+    img(img==255) = img(img==255) - gray;
+    img(img==0) = img(img==0) + gray;
     
     noised = img;
     
