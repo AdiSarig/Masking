@@ -5,7 +5,9 @@ function session = runTrial(isTypeA, hasProbe, session)
 % ms * fps = frames
 % ms / flip_interval = frames
 
-pixelTrigger = dispCross(session);
+%% Fixation
+dispCross(session);
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
 % vbl = Screen('Flip', session.window);
 
 % Datapixx('SetDoutValues', session.triggers(1).Trial_START); % send TTL at the next register write
@@ -22,7 +24,9 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).fix1Ti
 % waitFrames(.705/flip_interval, session);
 %wait 705 ms
 
-pixelTrigger = dispCheckerboard(session);
+%% Mask
+dispCheckerboard(session);
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.mask);
 dispCross(session);
 % WaitSecs('UntilTime', vbl + .705);
 
@@ -50,8 +54,9 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1T
 %wait 96 ms
 
 if isTypeA
-    pixelTrigger = dispCross(session);
-%     WaitSecs('UntilTime', vbl + .096);
+    dispCross(session);
+    pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
+    %     WaitSecs('UntilTime', vbl + .096);
     while 1
         Datapixx('RegWrRd');
         t_now = Datapixx('GetTime');
@@ -77,7 +82,9 @@ if isTypeA
     %wait 96
 end
 
-pixelTrigger = dispStimulus(session);
+%% Stimulus
+dispStimulus(session);
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.image);
 dispCross(session);
 
 if hasProbe
@@ -110,7 +117,8 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).stimTi
 %wait 33
 
 if isTypeA
-    pixelTrigger = dispCross(session);
+    dispCross(session);
+    pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
     if hasProbe
         dispProbe(session, xy_loc);
     end
@@ -138,7 +146,9 @@ if isTypeA
     %wait 96
 end
 
-pixelTrigger = dispCheckerboard(session);
+%% Mask
+dispCheckerboard(session);
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.mask);
 dispCross(session);
 
 if hasProbe
