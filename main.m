@@ -45,7 +45,7 @@ session = initSession(subjectID, sessionID, 5, 72, 72, 10, w, windowRect, round(
 session = runSession(session);
 
 % save session
-fileName = sprintf('..%cdata%cMasking_Sub_%d',filesep,filesep,session.subjectID);
+fileName = sprintf('..%cdata%cMasking_Sub_%s',filesep,filesep,session.subjectID);
 try
     save(fileName,'session');
 catch
