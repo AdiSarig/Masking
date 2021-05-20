@@ -19,7 +19,7 @@ Screen('Flip',session.window);                        % present stimuli
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-session.blocks(session.current.blockNum).trials(session.current.trialNum).fix1Time = vbl;
+session.blocks(session.current.blockNum).trials(session.current.trialNum).fix1Onset = vbl;
 
 % waitFrames(.705/flip_interval, session);
 %wait 705 ms
@@ -47,7 +47,7 @@ Screen('Flip',session.window);                        % present stimuli
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1Time = vbl;
+session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1Onset = vbl;
 
 % vbl = Screen('Flip', session.window);
 % waitFrames(.096/flip_interval, session);
@@ -75,11 +75,13 @@ if isTypeA
     
     Datapixx('RegWrRd');                                        % must read the register before getting the marker
     vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Time = vbl;
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = vbl;
     
     
     % waitFrames(.096/flip_interval, session);
     %wait 96
+else
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = -1;
 end
 
 %% Stimulus
@@ -112,6 +114,7 @@ Screen('Flip',session.window);                        % present stimuli
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
 session.blocks(session.current.blockNum).trials(session.current.trialNum).stimTime = vbl;
+session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOnset = vbl;
 
 % waitFrames(.033/flip_interval, session);
 %wait 33
@@ -140,10 +143,12 @@ if isTypeA
     
     Datapixx('RegWrRd');                                        % must read the register before getting the marker
     vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix3Time = vbl;
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix3Onset = vbl;
     
     % waitFrames(.096/flip_interval, session);
     %wait 96
+else
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix3Onset = -1;
 end
 
 %% Mask
@@ -186,7 +191,7 @@ Screen('Flip',session.window);                        % present stimuli
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-session.blocks(session.current.blockNum).trials(session.current.trialNum).mask2Time = vbl;
+session.blocks(session.current.blockNum).trials(session.current.trialNum).mask2Onset = vbl;
 
 % waitFrames(.096/flip_interval, session);
 %wait 96 ms
@@ -200,4 +205,8 @@ while 1
     end
 end
 
+Datapixx('SetMarker');
+Screen('Flip',session.window);
+Datapixx('RegWrRd');
+session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
 end

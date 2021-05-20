@@ -16,6 +16,10 @@ while session.current.blockNum <= session.totalBlocks
     end
     % self paced break at the end of each block
     dispBreak(session);
+    % Calculate durations
+    session = calcDurations(session);
+    % proceed to the next block
+    sca
     session.current.blockNum = session.current.blockNum + 1;
     session.current.trialNum = 1;
 end
