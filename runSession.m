@@ -21,6 +21,7 @@ while session.current.blockNum <= session.totalBlocks
     % proceed to the next block
     sca
     session.current.blockNum = session.current.blockNum + 1;
+    % restart trial count
     session.current.trialNum = 1;
 end
 sess = session;

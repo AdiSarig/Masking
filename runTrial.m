@@ -15,7 +15,7 @@ pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
 Datapixx('SetMarker');                                      % save the onset of the next register write
 Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
 
-Screen('Flip',session.window);                        % present stimuli
+Screen('Flip',session.window);  % present fixation
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
@@ -43,7 +43,7 @@ end
 Datapixx('SetMarker');                                      % save the onset of the next register write
 Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
 
-Screen('Flip',session.window);                        % present stimuli
+Screen('Flip',session.window);  % present mask
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
@@ -53,6 +53,7 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1O
 % waitFrames(.096/flip_interval, session);
 %wait 96 ms
 
+%% Fixation
 if isTypeA
     dispCross(session);
     pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
@@ -64,14 +65,14 @@ if isTypeA
             break % break one frame before target frame
         end
     end
-%     vbl = Screen('Flip', session.window);
+    %     vbl = Screen('Flip', session.window);
     
     % Datapixx('SetDoutValues', session.triggers(1).Trial_START); % send TTL at the next register write
     
     Datapixx('SetMarker');                                      % save the onset of the next register write
     Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
     
-    Screen('Flip',session.window);                        % present stimuli
+    Screen('Flip',session.window);  % present fixation
     
     Datapixx('RegWrRd');                                        % must read the register before getting the marker
     vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
@@ -109,7 +110,7 @@ end
 Datapixx('SetMarker');                                      % save the onset of the next register write
 Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
 
-Screen('Flip',session.window);                        % present stimuli
+Screen('Flip',session.window); % present stimuli
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
@@ -122,6 +123,7 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOn
 % waitFrames(.033/flip_interval, session);
 %wait 33
 
+%% Fixation
 if isTypeA
     dispCross(session);
     pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
@@ -136,13 +138,13 @@ if isTypeA
             break % break one frame before target frame
         end
     end
-%     vbl = Screen('Flip', session.window);
+    %     vbl = Screen('Flip', session.window);
     % Datapixx('SetDoutValues', session.triggers(1).Trial_START); % send TTL at the next register write
     
     Datapixx('SetMarker');                                      % save the onset of the next register write
     Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
     
-    Screen('Flip',session.window);                        % present stimuli
+    Screen('Flip',session.window);  % present fixation
     
     Datapixx('RegWrRd');                                        % must read the register before getting the marker
     vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
@@ -173,7 +175,7 @@ if isTypeA
         end
     end
 else
-%     WaitSecs('UntilTime', vbl + .033);
+    %     WaitSecs('UntilTime', vbl + .033);
     while 1
         Datapixx('RegWrRd');
         t_now = Datapixx('GetTime');
@@ -190,7 +192,7 @@ end
 Datapixx('SetMarker');                                      % save the onset of the next register write
 Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
 
-Screen('Flip',session.window);                        % present stimuli
+Screen('Flip',session.window);  % present mask
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
