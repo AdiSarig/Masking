@@ -113,7 +113,10 @@ Screen('Flip',session.window);                        % present stimuli
 
 Datapixx('RegWrRd');                                        % must read the register before getting the marker
 vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-session.blocks(session.current.blockNum).trials(session.current.trialNum).stimTime = vbl;
+% Start response collection and Dout schedule based on Din button press
+triggers = 5; %temp for dev
+startResponseCollection(triggers)
+
 session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOnset = vbl;
 
 % waitFrames(.033/flip_interval, session);
@@ -209,4 +212,18 @@ Datapixx('SetMarker');
 Screen('Flip',session.window);
 Datapixx('RegWrRd');
 session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
+
+%% Response collection
+[Response, RTfromStart] = getResponse(); % retrive response from register device
+session.blocks(session.current.blockNum).trials(session.current.trialNum).Response = Response;
+session.blocks(session.current.blockNum).trials(session.current.trialNum).RTfromStart = RTfromStart;
+if Response ~= -1
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).RT = RTfromStart - session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOnset;
+else
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).RT = -1;
+end
+
+Datapixx('StopDinLog'); % stop response collection
+Datapixx('RegWrRd');
+
 end
