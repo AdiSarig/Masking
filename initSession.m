@@ -15,7 +15,7 @@ session.current.blockNum = 1;
 session.current.trialNum = 1;
 
 %% Instructions
-session.instructions.intermissionText = 'Press shift+a to abort experiment. \nPress any other key to continue.';
+session.instructions.intermissionText = 'Press two middle buttons to abort experiment. \nPress left key to continue.';
 session.instructions.folderPath = 'instructions';
 session.instructions.fileExtension = '.tif';
 session.instructions.font = 'Comic Sans MS';
