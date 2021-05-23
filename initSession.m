@@ -27,6 +27,10 @@ breakPath = sprintf('%s%cbreak.tif',infofileNames(1).folder, filesep);
 breakImg = imread(breakPath);
 session.instructions.breakTex = Screen('MakeTexture', session.window, breakImg);
 
+infoPath = sprintf('%s%cinstructions.tif',infofileNames(1).folder, filesep);
+infoImg = imread(infoPath);
+session.instructions.infoTex = Screen('MakeTexture', session.window, infoImg);
+
 endPath = sprintf('%s%cEnd.tif',infofileNames(1).folder, filesep);
 endImg = imread(endPath);
 session.instructions.endTex = Screen('MakeTexture', session.window, endImg);

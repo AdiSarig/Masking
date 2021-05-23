@@ -1,5 +1,6 @@
 function sess = runSession(session)
 while session.current.blockNum <= session.totalBlocks
+    dispInstructions(session);
     while session.current.trialNum <= session.trialsPerBlock
         % wait intermission
         % if abort signal, return
