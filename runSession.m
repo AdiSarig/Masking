@@ -24,6 +24,7 @@ while session.current.blockNum <= session.totalBlocks
     % restart trial count
     session.current.trialNum = 1;
 end
+dispEnd(session);
 sess = session;
 end
 
