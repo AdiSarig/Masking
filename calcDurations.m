@@ -1,6 +1,8 @@
 function session = calcDurations(session)
+% calculate durations at the end of the block
 
 data = session.blocks(session.current.blockNum).trials;
+
 uc_loc = [data.fix2Onset] < 0;
 
 fix1Dur = num2cell([data.mask1Onset] - [data.fix1Onset]);
@@ -26,8 +28,11 @@ fix3Dur = num2cell([data.mask2Onset] - [data.fix3Onset]);
 fix3Dur = num2cell(ones(size(data,2),1)*-1);
 [data(uc_loc).fix3Dur] = fix3Dur{uc_loc};
 
-mask2Dur = num2cell([data.trialEnd] - [data.mask2Onset]);
+mask2Dur = num2cell([data.fix4Onset] - [data.mask2Onset]);
 [data.mask2Dur] = mask2Dur{:};
+
+fix4Dur = num2cell([data.trialEnd] - [data.fix4Onset]);
+[data.fix4Dur] = fix4Dur{:};
 
 session.blocks(session.current.blockNum).trials = data;
 

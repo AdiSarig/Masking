@@ -51,6 +51,7 @@ session.timing.fix1Dur = 0.7 - session.timing.ifi;
 session.timing.CFixDur = 0.1 - session.timing.ifi;
 session.timing.maskDur = 0.1 - session.timing.ifi;
 session.timing.stimDur = 0.033 - session.timing.ifi;
+session.timing.responseDur = 1 - session.timing.ifi;
 
 %% Stimuli
 session.stim.face.folderPath = 'faceStim';
