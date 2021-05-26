@@ -262,7 +262,35 @@ Datapixx('RegWrRd');
 session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
 
 %% Response collection
-[Response, RTfromStart] = getResponse(); % retrive response from register device
+[Response, RTfromStart, accuracy] = getResponse(hasProbe); % retrive response from register device
+switch accuracy % send response triggers
+    case 'hit'
+        Datapixx('SetDoutValues', session.triggers(1).resp_hit);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).accuracy = 1;
+    case 'miss'
+        Datapixx('SetDoutValues', session.triggers(1).resp_miss);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).accuracy = 0;
+    case 'FA'
+        Datapixx('SetDoutValues', session.triggers(1).resp_FA);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).accuracy = 0;
+    case 'CR'
+        Datapixx('SetDoutValues', session.triggers(1).resp_CR);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).accuracy = 1;
+    case 'error'
+        Datapixx('SetDoutValues', session.triggers(1).resp_error);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).accuracy = 0;
+end
+
 session.blocks(session.current.blockNum).trials(session.current.trialNum).Response = Response;
 session.blocks(session.current.blockNum).trials(session.current.trialNum).RTfromStart = RTfromStart;
 if Response ~= -1
