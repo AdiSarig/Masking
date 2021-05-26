@@ -26,7 +26,7 @@ Datapixx('WriteDoutBuffer', zeros(length(triggers),1), doutBufferBaseAddr + 4096
 
 
 Datapixx('SetDoutSchedule', 0, 1000, length(triggers)+1, doutBufferBaseAddr); 
-% NOTE THE 2 instead of 1, this fixes the problem mentioned above.
+% NOTE THE +1, this fixes the problem mentioned above.
 Datapixx('SetDinDataDirection', 0);
 Datapixx('EnableDinDebounce');      % Filter out button bounce
 Datapixx('EnableDoutButtonSchedules', 2); % This starts the schedules

@@ -11,8 +11,14 @@ ResponsePixx('StopNow',1); % stop response collection
 
 if sum(find(resp(2,:))) == 7 % two middle buttons of the response box
     abortSession = 1;
+    Datapixx('SetDoutValues', session.triggers(1).exp_aborted); % send TTL at the next register write
+    Datapixx('RegWr');
+    WaitSecs(0.001);
 else
     abortSession = 0;
+    Datapixx('SetDoutValues', session.triggers(1).trial_start); % send TTL at the next register write
+    Datapixx('RegWr');
+    WaitSecs(0.001);
 end
 
 

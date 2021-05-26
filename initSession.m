@@ -13,6 +13,7 @@ session.trialsPerBlock = trialsPerBlock;
 session.totalBlocks = totalBlocks;
 session.current.blockNum = 1;
 session.current.trialNum = 1;
+session.triggers = initBIO(session);
 
 %% Instructions
 session.instructions.intermissionText = 'Press two middle buttons to abort experiment. \nPress left key to continue.';

@@ -53,6 +53,10 @@ catch
     save(fileName,'session');
 end
 
+Datapixx('SetDoutValues', session.triggers(1).init_Dout); % send TTL at the next register write
+Datapixx('RegWr');
+WaitSecs(0.001);
+
 sca;
 ResponsePixx('Close');
 Datapixx('Close');
