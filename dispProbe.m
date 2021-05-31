@@ -1,7 +1,7 @@
 function xy_loc = dispProbe(session, xy_loc)
 
 % [xCenter, yCenter] = RectCenter(session.windowRect);
-dotColor = [1 0 0];
+dotColor = [0 0 1];
 dotSizePix = 20;
 
 if isempty(xy_loc)
