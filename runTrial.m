@@ -245,7 +245,9 @@ vbl = Datapixx('GetMarker');                       % retrieve the saved timing f
 session.blocks(session.current.blockNum).trials(session.current.trialNum).fix4Onset = vbl;
 
 
-%% End of trial
+%% Intermission screen
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.inter);
+
 while 1
     Datapixx('RegWrRd');
     t_now = Datapixx('GetTime');
@@ -257,9 +259,14 @@ end
 Datapixx('SetDoutValues', session.triggers(1).trial_end); % send TTL at the next register write
 
 Datapixx('SetMarker');
+Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
+
 Screen('Flip',session.window);
+WaitSecs(0.001);
+
 Datapixx('RegWrRd');
-session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
+vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
+session.blocks(session.current.blockNum).trials(session.current.trialNum).intermission = vbl;
 
 %% Response collection
 [Response, RTfromStart, accuracy] = getResponse(hasProbe, vbl, session.timing.responseDur); % retrive response from register device
@@ -297,6 +304,34 @@ if Response ~= -1
     session.blocks(session.current.blockNum).trials(session.current.trialNum).RT = RTfromStart - session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOnset;
 else
     session.blocks(session.current.blockNum).trials(session.current.trialNum).RT = -1;
+end
+
+%% Trial end
+pixelTrigger = dispPixelTrigger(session, session.stim.triggers.end);
+while 1
+    Datapixx('RegWrRd');
+    t_now = Datapixx('GetTime');
+    if t_now > vbl + session.timing.interDur
+        break % break one frame before target frame
+    end
+end
+% Datapixx('SetDoutValues', session.triggers(1).trial_end); % send TTL at the next register write
+
+Datapixx('SetMarker');
+Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
+
+Screen('Flip',session.window);
+WaitSecs(0.001);
+
+Datapixx('RegWrRd');
+session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
+
+
+%% Timeout for too long response time
+if hasProbe && (RTfromStart - session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOnset > session.timing.timeoutLim || strcmp(accuracy, 'miss'))
+    DrawFormattedText(session.window, char(session.instructions.timeout), 'center', 'center', session.instructions.colour);
+    Screen('Flip', session.window);
+    WaitSecs(3);
 end
 
 Datapixx('StopDinLog'); % stop response collection

@@ -31,8 +31,11 @@ fix3Dur = num2cell(ones(size(data,2),1)*-1);
 mask2Dur = num2cell([data.fix4Onset] - [data.mask2Onset]);
 [data.mask2Dur] = mask2Dur{:};
 
-fix4Dur = num2cell([data.trialEnd] - [data.fix4Onset]);
+fix4Dur = num2cell([data.intermission] - [data.fix4Onset]);
 [data.fix4Dur] = fix4Dur{:};
+
+intermissionDur = num2cell([data.trialEnd] - [data.intermission]);
+[data.intermissionDur] = intermissionDur{:};
 
 session.blocks(session.current.blockNum).trials = data;
 
