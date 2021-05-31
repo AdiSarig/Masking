@@ -5,18 +5,15 @@ Datapixx('RegWr');
 WaitSecs(0.001);
 
 while session.current.blockNum <= session.totalBlocks
-    dispInstructions(session);
+    if dispInstructions(session)
+        sess = session;
+        disp(strcat('Session aborted at Block: ', string(session.current.blockNum), '/', string(session.totalBlocks), ' Trial:', string(session.current.trialNum), '/', string(session.trialsPerBlock)));
+        return
+    end
     Datapixx('SetDoutValues', session.triggers(1).block_start); % send TTL at the next register write
     Datapixx('RegWr');
     WaitSecs(0.001);
     while session.current.trialNum <= session.trialsPerBlock
-        % wait intermission
-        % if abort signal, return
-        if dispIntermission(session)
-            sess = session;
-            disp(strcat('Session aborted at Block: ', string(session.current.blockNum), '/', string(session.totalBlocks), ' Trial:', string(session.current.trialNum), '/', string(session.trialsPerBlock)));
-            return
-        end
         
         trialInfo = session.blocks(session.current.blockNum).trials(session.current.trialNum);
         session = runTrial(trialInfo.isTypeA, trialInfo.hasProbe, session);
