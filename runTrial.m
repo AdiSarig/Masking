@@ -262,7 +262,7 @@ Datapixx('RegWrRd');
 session.blocks(session.current.blockNum).trials(session.current.trialNum).trialEnd = Datapixx('GetMarker');
 
 %% Response collection
-[Response, RTfromStart, accuracy] = getResponse(hasProbe); % retrive response from register device
+[Response, RTfromStart, accuracy] = getResponse(hasProbe, vbl, session.timing.responseDur); % retrive response from register device
 switch accuracy % send response triggers
     case 'hit'
         Datapixx('SetDoutValues', session.triggers(1).resp_hit);
