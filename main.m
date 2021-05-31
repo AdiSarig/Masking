@@ -40,7 +40,7 @@ Screen(w,'BlendFunction',GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); % this enables u
 % HideCursor;
 Screen('TextSize', w, 40);
 
-session = initSession(subjectID, sessionID, 5, 72, 72, 10, w, windowRect, round(bgColour*255));
+session = initSession(subjectID, sessionID, 5, 72, 72, 20, w, windowRect, round(bgColour*255));
 
 session = runSession(session);
 

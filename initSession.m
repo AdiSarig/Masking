@@ -114,7 +114,7 @@ session.stim.triggers.mask = vpix_trig(:,17:24);      % mask trigger
 
 end
 
-% [WARNING]: Probe occurance random. Not ballanced between trials A and B
+
 function allTrials = initTrialInfo(totalAtrials, totalBtrials, totalProbeTrials, faceTextures, houseTextures, noiseTextures)
 totalTrials = totalAtrials + totalBtrials;
 % check there is the right number of stimuli
@@ -125,23 +125,15 @@ if totalTrials ~= 4*(faceTexturesShape(2) + houseTexturesShape(2) + noiseTexture
     error(strcat('Error: expected totalFaceTextures = totalHouseTextures = totalNoiseTextures = trialsPerBlock/12 but found: ', string(faceTexturesShape(2)), ' face textures, ', string(houseTexturesShape(2)), ' house textures, and ', string(noiseTexturesShape(2)),'noise textures for ', string(totalTrials), ' trialsPerBlock'));
 end
 
-for i = 1:totalAtrials
-    trials(i).isTypeA = 1;
-    trials(i).hasProbe = 0;
-end
-for i = totalAtrials+1:totalTrials
-    trials(i).isTypeA = 0;
-    trials(i).hasProbe = 0;
-end
-for i = datasample(1:totalTrials,totalProbeTrials,'Replace',false)
-    trials(i).hasProbe = 1;
-end
+isTypeA = num2cell([ones(1,totalAtrials), zeros(1,totalBtrials)]);
+hasProbe = zeros(1,totalTrials);
+probeA = datasample(1:totalAtrials,round(totalProbeTrials/2),'Replace',false);
+probeB = datasample(1+totalAtrials:totalTrials,round(totalProbeTrials/2),'Replace',false);
+probeInd = sort([probeA, probeB]);
+hasProbe(probeInd) = 1;
+hasProbe = num2cell(hasProbe);
 
-
-%     trials = trials(randperm(totalTrials));
-
-%     trials(:).stimulus.texture = [ faceTextures houseTextures addNoise(faceTextures, .5)];
-%     trials(:).stimulus.type = [ repmat('face',[1 faceTexturesShape(2)]) repmat('house',[1 houseTexturesShape(2)]) repmat('noise',[1 faceTexturesShape(2)])];
+trials = struct('isTypeA', isTypeA, 'hasProbe', hasProbe);
 
 textures = num2cell(repmat([ faceTextures houseTextures noiseTextures],1,4));
 types = repmat(repelem({'face', 'house', 'noise'},1,12),1,4);
