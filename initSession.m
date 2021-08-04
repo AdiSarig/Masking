@@ -84,7 +84,8 @@ for i = 1:size(session.stim.house.fileNames)
     session.stim.house.textures(i) = Screen('MakeTexture', session.window, img);
 end
 
-% Create noise stimuli
+% Create noise stimuli - created but not used to easily change back from
+% blank to noise if needed
 for i = 1:size(session.stim.house.fileNames)
     imPath = sprintf('%s%c%s',session.stim.house.fileNames(i).folder, filesep, session.stim.house.fileNames(i).name);
     img = imread(imPath);

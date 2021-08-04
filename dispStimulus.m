@@ -1,6 +1,11 @@
 function dispStimulus(session)
 
-textureToDisp = session.blocks(session.current.blockNum).trials(session.current.trialNum).stimulusTexture;
-Screen('DrawTextures', session.window, textureToDisp, [], session.stim.location, 0, 0);
+block_num = session.current.blockNum;
+trial_num = session.current.blockNum;
+
+if ~strcmp(session.blocks(block_num).trials(trial_num).stimulusType,'noise')
+    textureToDisp = session.blocks(block_num).trials(trial_num).stimulusTexture;
+    Screen('DrawTextures', session.window, textureToDisp, [], session.stim.location, 0, 0);
+end
 
 end
