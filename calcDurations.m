@@ -28,11 +28,14 @@ fix3Dur = num2cell([data.mask2Onset] - [data.fix3Onset]);
 fix3Dur = num2cell(ones(size(data,2),1)*-1);
 [data(uc_loc).fix3Dur] = fix3Dur{uc_loc};
 
-mask2Dur = num2cell([data.fix4Onset] - [data.mask2Onset]);
+mask2Dur = num2cell([data.fix4Onset1] - [data.mask2Onset]);
 [data.mask2Dur] = mask2Dur{:};
 
-fix4Dur = num2cell([data.intermission] - [data.fix4Onset]);
-[data.fix4Dur] = fix4Dur{:};
+fix4Dur1 = num2cell([data.fix4Onset2] - [data.fix4Onset1]);
+[data.fix4Dur1] = fix4Dur1{:};
+
+fix4Dur2 = num2cell([data.intermission] - [data.fix4Onset2]);
+[data.fix4Dur2] = fix4Dur2{:};
 
 intermissionDur = num2cell([data.trialEnd] - [data.intermission]);
 [data.intermissionDur] = intermissionDur{:};
