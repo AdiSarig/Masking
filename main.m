@@ -42,6 +42,8 @@ Screen('TextSize', w, 40);
 
 session = initSession(subjectID, sessionID, 5, 72, 72, 20, w, windowRect, round(bgColour*255));
 
+previewStim(session);
+
 session = runSession(session);
 
 % save session

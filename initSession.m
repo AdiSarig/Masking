@@ -37,6 +37,9 @@ endPath = sprintf('%s%cEnd.tif',infofileNames(1).folder, filesep);
 endImg = imread(endPath);
 session.instructions.endTex = Screen('MakeTexture', session.window, endImg);
 
+previewPath = sprintf('%s%cpreview.tif',infofileNames(1).folder, filesep);
+previewImg = imread(previewPath);
+session.instructions.previewTex = Screen('MakeTexture', session.window, previewImg);
 
 Screen('TextFont', session.window ,session.instructions.font);
 
