@@ -24,10 +24,22 @@ while session.current.blockNum <= session.totalBlocks
     Datapixx('SetDoutValues', session.triggers(1).block_end); % send TTL at the next register write
     Datapixx('RegWr');
     WaitSecs(0.004);
-    % self paced break at the end of each block
-    dispBreak(session);
+    
     % Calculate durations
     session = calcDurations(session);
+    
+    % Save data after each block
+    fileName = sprintf('..%cdata%cMasking_Sub_%s_temp',filesep,filesep,session.subjectID);
+    try
+        save(fileName,'session');
+    catch
+        mkdir(sprintf('..%cdata',filesep));
+        save(fileName,'session');
+    end
+    
+    % self paced break at the end of each block
+    dispBreak(session);
+    
     % proceed to the next block
     session.current.blockNum = session.current.blockNum + 1;
     % restart trial count
