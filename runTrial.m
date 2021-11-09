@@ -29,70 +29,74 @@ WaitSecs(0.004);
 
 
 %% Mask
-dispCheckerboard(session);
-pixelTrigger = dispPixelTrigger(session, session.stim.triggers.mask);
-dispCross(session);
-% WaitSecs('UntilTime', vbl + .705);
-
-while 1
-    Datapixx('RegWrRd');
-    t_now = Datapixx('GetTime');
-    if t_now > vbl + session.timing.fix1Dur
-        break % break one frame before target frame
-    end
-end
-
-Datapixx('SetDoutValues', session.triggers(1).mask); % send TTL at the next register write
-
-Datapixx('SetMarker');                                      % save the onset of the next register write
-Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
-
-Screen('Flip',session.window);  % present mask
-WaitSecs(0.004);
-
-Datapixx('RegWrRd');                                        % must read the register before getting the marker
-vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1Onset = vbl;
-
-% Initialize digital output after sending a trigger
-Datapixx('SetDoutValues', session.triggers(1).init_Dout); % send TTL at the next register write
-Datapixx('RegWr');
-WaitSecs(0.004);
-
-%% Fixation
-if isTypeA
-    pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
+if strcmpi(session.design,'sandwich masking')
+    dispCheckerboard(session);
+    pixelTrigger = dispPixelTrigger(session, session.stim.triggers.mask);
     dispCross(session);
-    %     WaitSecs('UntilTime', vbl + .096);
+    % WaitSecs('UntilTime', vbl + .705);
+    
     while 1
         Datapixx('RegWrRd');
         t_now = Datapixx('GetTime');
-        if t_now > vbl + session.timing.maskDur
+        if t_now > vbl + session.timing.fix1Dur
             break % break one frame before target frame
         end
     end
-    %     vbl = Screen('Flip', session.window);
     
-    Datapixx('SetDoutValues', session.triggers(1).fix); % send TTL at the next register write
+    Datapixx('SetDoutValues', session.triggers(1).mask); % send TTL at the next register write
     
     Datapixx('SetMarker');                                      % save the onset of the next register write
     Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
     
-    Screen('Flip',session.window);  % present fixation
+    Screen('Flip',session.window);  % present mask
     WaitSecs(0.004);
     
     Datapixx('RegWrRd');                                        % must read the register before getting the marker
     vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
-    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = vbl;
+    session.blocks(session.current.blockNum).trials(session.current.trialNum).mask1Onset = vbl;
     
     % Initialize digital output after sending a trigger
     Datapixx('SetDoutValues', session.triggers(1).init_Dout); % send TTL at the next register write
     Datapixx('RegWr');
     WaitSecs(0.004);
+    
+    %% Fixation
+    if isTypeA
+        pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
+        dispCross(session);
+        %     WaitSecs('UntilTime', vbl + .096);
+        while 1
+            Datapixx('RegWrRd');
+            t_now = Datapixx('GetTime');
+            if t_now > vbl + session.timing.maskDur
+                break % break one frame before target frame
+            end
+        end
+        %     vbl = Screen('Flip', session.window);
+        
+        Datapixx('SetDoutValues', session.triggers(1).fix); % send TTL at the next register write
+        
+        Datapixx('SetMarker');                                      % save the onset of the next register write
+        Datapixx('RegWrPixelSync',pixelTrigger);                    % register write exactly when the pixels appear on screen
+        
+        Screen('Flip',session.window);  % present fixation
+        WaitSecs(0.004);
+        
+        Datapixx('RegWrRd');                                        % must read the register before getting the marker
+        vbl = Datapixx('GetMarker');                       % retrieve the saved timing from the register
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = vbl;
+        
+        % Initialize digital output after sending a trigger
+        Datapixx('SetDoutValues', session.triggers(1).init_Dout); % send TTL at the next register write
+        Datapixx('RegWr');
+        WaitSecs(0.004);
+    else
+        session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = -1;
+    end
+    add_to_vbl = session.timing.CFixDur;
 else
-    session.blocks(session.current.blockNum).trials(session.current.trialNum).fix2Onset = -1;
-end
-
+    add_to_vbl = session.timing.fix1Dur;
+end % design
 %% Stimulus
 dispStimulus(session);
 pixelTrigger = dispPixelTrigger(session, session.stim.triggers.image);
@@ -114,7 +118,7 @@ TTL = setTrigger(session,isTypeA);
 while 1
     Datapixx('RegWrRd');
     t_now = Datapixx('GetTime');
-    if t_now > vbl + session.timing.CFixDur
+    if t_now > vbl + add_to_vbl
         break % break one frame before target frame
     end
 end
