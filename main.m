@@ -34,8 +34,8 @@ screens = Screen('Screens');
 screenNumber = max(screens);
 bgColour     =  GrayIndex(screenNumber);
 
-% [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour);
-[w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour, [0 0 1000 800]);
+[w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour);
+% [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour, [0 0 1000 800]);
 Screen(w,'BlendFunction',GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); % this enables us to use the alpha transparency
 HideCursor;
 Screen('TextSize', w, 40);
