@@ -38,7 +38,9 @@ while session.current.blockNum <= session.totalBlocks
     end
     
     % self paced break at the end of each block
-    dispBreak(session);
+    if session.current.blockNum < session.totalBlocks
+        dispBreak(session);
+    end
     
     % proceed to the next block
     session.current.blockNum = session.current.blockNum + 1;
