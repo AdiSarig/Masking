@@ -2,7 +2,7 @@ function xy_loc = dispProbe(session, xy_loc)
 
 % [xCenter, yCenter] = RectCenter(session.windowRect);
 dotColor = [1 0 0];
-dotSizePix = 20;
+dotSizePix = 8;
 
 if isempty(xy_loc)
     screenXpixels = session.stim.location(3) - session.stim.location(1) - dotSizePix;
