@@ -43,7 +43,8 @@ while session.current.blockNum <= session.totalBlocks
     session = calcDurations(session);
     
     % Save data after each block
-    fileName = sprintf('..%cdata%cMasking_Sub_%s_temp',filesep,filesep,session.subjectID);
+    fileName = sprintf('..%cdata%cMasking_Sub_%s_block_%d',filesep,filesep,...
+        session.subjectID,session.current.blockNum);
     try
         save(fileName,'session');
     catch
