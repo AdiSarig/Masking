@@ -19,6 +19,20 @@ while session.current.blockNum <= session.totalBlocks
         session = runTrial(trialInfo.isTypeA, trialInfo.hasProbe, session);
         
         session.current.trialNum = session.current.trialNum + 1;
+        
+        % Stop for maintenance
+        [keyIsDown, ~, keyCode] = KbCheck;
+        if keyIsDown
+            if strcmpi(KbName(keyCode),'m') % m for maintenance
+                stopForMaintenance(session);
+            elseif strcmpi(KbName(keyCode),'ESCAPE') || strcmpi(KbName(keyCode),'esc')% abort experiment
+                ListenChar(0);
+                ShowCursor;
+                Screen('closeall');
+                sess = session;
+                return
+            end
+        end
     end
     % send end of block trigger
     Datapixx('SetDoutValues', session.triggers(1).block_end); % send TTL at the next register write

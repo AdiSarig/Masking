@@ -42,6 +42,9 @@ previewPath = sprintf('%s%cpreview.tif',infofileNames(1).folder, filesep);
 previewImg = imread(previewPath);
 session.instructions.previewTex = Screen('MakeTexture', session.window, previewImg);
 
+maintenancePath = sprintf('%s%cmaintenance.tif',infofileNames(1).folder, filesep);
+maintenanceImg = imread(maintenancePath);
+session.instructions.maintenanceTex = Screen('MakeTexture', session.window, maintenanceImg);
 
 if mod(subjectID,2) % counterbalance response buttons
     AFCinfoPath = sprintf('%s%cAFC_instructions1.tif',infofileNames(1).folder, filesep);
