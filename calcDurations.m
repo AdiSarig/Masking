@@ -38,12 +38,22 @@ mask2Dur = num2cell([data.fix4Onset1] - [data.mask2Onset]);
 fix4Dur1 = num2cell([data.fix4Onset2] - [data.fix4Onset1]);
 [data.fix4Dur1] = fix4Dur1{:};
 
-fix4Dur2 = num2cell([data.intermission] - [data.fix4Onset2]);
+fix4Dur2 = num2cell([data.intermission1] - [data.fix4Onset2]);
 [data.fix4Dur2] = fix4Dur2{:};
 
-intermissionDur = num2cell([data.trialEnd] - [data.intermission]);
-[data.intermissionDur] = intermissionDur{:};
-
+if strcmp(session.sessionID,'1')
+    intermission1Dur = num2cell([data.trialEnd] - [data.intermission1]);
+    [data.intermission1Dur] = intermission1Dur{:};
+else % session 2 also has PAS
+    intermission1Dur = num2cell([data.pas_start_flip_vpixx] - [data.intermission1]);
+    [data.intermission1Dur] = intermission1Dur{:};
+    
+    pas_dur = num2cell([data.intermission2] - [data.pas_start_flip_vpixx]);
+    [data.pas_dur] = pas_dur{:};
+    
+    intermission2Dur = num2cell([data.trialEnd] - [data.intermission2]);
+    [data.intermission2Dur] = intermission2Dur{:};
+end
 session.blocks(session.current.blockNum).trials = data;
 
 end

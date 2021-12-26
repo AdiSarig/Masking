@@ -25,7 +25,9 @@ triggers.UC_noise = 15; % runTrial - present stimulus
 triggers.fix  = 50; % runTrial - present fixation
 triggers.mask = 60; % runTrial - present mask
 
+triggers.interval = 65; % runTrial - flicker fixation
 triggers.hasProbe = 70; % runTrial - in the first hasProbe condition
+triggers.PAS = 75; % runTrial - only during the second session (2AFC)
 
 %% Responses:
 triggers.resp        = 80; % runTrial - send to response schedule
