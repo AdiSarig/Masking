@@ -62,8 +62,9 @@ while session.current.blockNum <= session.totalBlocks
     % restart trial count
     session.current.trialNum = 1;
 end
-dispEnd(session);
-
+if strcmp(session.sessionID,'2')
+    dispEnd(session);
+end
 Datapixx('SetDoutValues', session.triggers(1).exp_end); % send TTL at the next register write
 Datapixx('RegWr');
 WaitSecs(0.004);
