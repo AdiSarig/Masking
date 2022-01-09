@@ -61,7 +61,9 @@ try
     
     %% Post test - 2AFC (face/house) and PAS
     sessionID = '2';
-    session2 = initSession(subjectID, sessionID, 1, 72, 72, 0, w, windowRect, round(bgColour*255));
+    session2 = initSession(subjectID, sessionID, 2, 72, 72, 0, w, windowRect, round(bgColour*255));
+    
+    previewStim(session);
     
     session2 = runSession(session2);
     
