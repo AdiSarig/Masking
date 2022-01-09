@@ -118,7 +118,7 @@ for i = 1:size(session.stim.house.fileNames)
 end
 
 for i = 1:totalBlocks
-    session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures, session.stim.noise.textures);
+    session.blocks(i).trials = initTrialInfo(AtrialsPerBlock, BtrialsPerBlock, probeTrialsPerBlock, session.stim.face.textures, session.stim.house.textures, session.stim.noise.textures, session);
 end
 
 % create pixel triggers
@@ -152,6 +152,9 @@ session.stim.triggers.inter   = vpix_trig(:,33:40);     % intermission trigger
 session.stim.triggers.end     = vpix_trig(:,41:48);     % intermission trigger
 session.stim.triggers.PAS     = vpix_trig(:,49:56);     % intermission trigger
 
+toTexture = repmat(eye(2), 4, 4);
+session.stim.mask = Screen('MakeTexture', session.window, toTexture);
+
 %% response info
 if mod(subjectID,2)
     session.resp.house = 1;
@@ -169,7 +172,7 @@ end
 end
 
 
-function allTrials = initTrialInfo(totalAtrials, totalBtrials, totalProbeTrials, faceTextures, houseTextures, noiseTextures)
+function allTrials = initTrialInfo(totalAtrials, totalBtrials, totalProbeTrials, faceTextures, houseTextures, noiseTextures, session)
 totalTrials = totalAtrials + totalBtrials;
 % check there is the right number of stimuli
 faceTexturesShape = size(faceTextures);
@@ -188,6 +191,21 @@ hasProbe(probeInd) = 1;
 hasProbe = num2cell(hasProbe);
 
 trials = struct('isTypeA', isTypeA, 'hasProbe', hasProbe);
+
+dotSizePix = 8;
+for ind = 1:length(trials)
+    if trials(ind).hasProbe
+        screenXpixels = session.stim.location(3) - session.stim.location(1) - dotSizePix;
+        screenYpixels = session.stim.location(4) - session.stim.location(2) - dotSizePix;
+        rand('seed', sum(100 * clock));
+        
+        dotXpos = rand * screenXpixels + session.stim.location(1);
+        dotYpos = rand * screenYpixels + session.stim.location(2);
+        trials(ind).probe_loc = [dotXpos dotYpos] + dotSizePix/2;
+    else
+        trials(ind).probe_loc = -1;
+    end
+end
 
 textures = num2cell(repmat([ faceTextures houseTextures noiseTextures],1,4));
 types = repmat(repelem({'face', 'house', 'noise'},1,12),1,4);
