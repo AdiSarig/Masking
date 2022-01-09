@@ -73,11 +73,12 @@ end
 
 % Remove one frame duration from timing for accuracy
 session.timing.fix1Dur = 0.7 - session.timing.ifi;
-session.timing.CFixDur = 0.1 - session.timing.ifi;
+session.timing.CFixDur = 0.08333 - session.timing.ifi;
+session.timing.UCFixDur = 0.00833 - session.timing.ifi;
 session.timing.maskDur = 0.1 - session.timing.ifi;
-session.timing.stimDur = 0.033 - session.timing.ifi;
-session.timing.responseDur1 = 0.1 - session.timing.ifi;
-session.timing.responseDur2 = 0.9 - session.timing.ifi;
+session.timing.stimDur = 0.01667 - session.timing.ifi;
+session.timing.responseDur1 = 0.075 - session.timing.ifi; % match probe duration in the UC condition to probe duration in the C condition
+session.timing.responseDur2 = 0.925 - session.timing.ifi;
 session.timing.interDur = 0.1 - session.timing.ifi;
 session.timing.timeoutLim = 0.75; % RT timeout
 

@@ -39,6 +39,11 @@ WaitSecs(0.004);
 
 %% Mask
 if strcmpi(session.design,'sandwich masking')
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Durations have been modified since swiching paradigms.
+    % Make sure the new duration settings fit the old sandwitch design
+    % before switching.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     dispCheckerboard(session);
     pixelTrigger = dispPixelTrigger(session, session.stim.triggers.mask);
     dispCross(session);
@@ -155,7 +160,7 @@ session.blocks(session.current.blockNum).trials(session.current.trialNum).stimOn
 
 
 %% Fixation
-if isTypeA
+% if isTypeA
     dispCross(session);
     pixelTrigger = dispPixelTrigger(session, session.stim.triggers.fix);
     if hasProbe
@@ -200,22 +205,26 @@ if hasProbe
 end
 
 if isTypeA
-    while 1
-        Datapixx('RegWrRd');
-        t_now = Datapixx('GetTime');
-        if t_now > vbl + session.timing.CFixDur
-            break % break one frame before target frame
-        end
-    end
+    fix_dur = session.timing.CFixDur;
 else
+    fix_dur = session.timing.UCFixDur;
+end
     while 1
         Datapixx('RegWrRd');
         t_now = Datapixx('GetTime');
-        if t_now > vbl + session.timing.stimDur
+        if t_now > vbl + fix_dur
             break % break one frame before target frame
         end
     end
-end
+% else
+%     while 1
+%         Datapixx('RegWrRd');
+%         t_now = Datapixx('GetTime');
+%         if t_now > vbl + session.timing.stimDur
+%             break % break one frame before target frame
+%         end
+%     end
+% end
 
 Datapixx('SetDoutValues', session.triggers(1).mask); % send TTL at the next register write
 
