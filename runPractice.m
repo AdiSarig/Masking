@@ -1,12 +1,29 @@
 function sess = runPractice(session)
 
+%% prepare practice
 if strcmp(session.sessionID,'1')
     load('Prac1_data', 'trials');
 else
     load('Prac2_data', 'trials');
 end
 session.totalBlocks = 1;
+%% Replace textures
+stimType = extractfield(session.blocks(1).trials, 'stimulusType');
+n_trials = find(strcmp(stimType, 'noise'));
+f_trials = find(strcmp(stimType, 'face'));
+h_trials = find(strcmp(stimType, 'house'));
+for ind = 1:length(trials)
+    switch trials(ind).stimulusType
+        case 'noise'
+            trials(ind).stimulusTexture = session.blocks(1).trials(n_trials(1)).stimulusTexture;
+        case 'face'
+            trials(ind).stimulusTexture = session.blocks(1).trials(f_trials(1)).stimulusTexture;
+        case 'house'
+            trials(ind).stimulusTexture = session.blocks(1).trials(h_trials(1)).stimulusTexture;
+    end
+end
 
+%% Run practice
 Datapixx('SetDoutValues', session.triggers(1).exp_start); % send TTL at the next register write
 Datapixx('RegWr');
 WaitSecs(0.004);
