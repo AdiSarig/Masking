@@ -198,7 +198,7 @@ for ind = 1:length(trials)
     if trials(ind).hasProbe
         screenXpixels = session.stim.location(3) - session.stim.location(1) - dotSizePix;
         screenYpixels = session.stim.location(4) - session.stim.location(2) - dotSizePix;
-        rand('seed', sum(100 * clock));
+%         rand('seed', sum(100 * clock));
         
         dotXpos = rand * screenXpixels + session.stim.location(1);
         dotYpos = rand * screenYpixels + session.stim.location(2);
