@@ -37,7 +37,7 @@ try
     bgColour     =  GrayIndex(screenNumber);
     
     [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour);
-    % [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour, [0 0 1000 800]);
+%     [w, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColour, [0 0 1000 800]);
     Screen(w,'BlendFunction',GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); % this enables us to use the alpha transparency
     HideCursor;
     Screen('TextSize', w, 40);
@@ -46,6 +46,8 @@ try
     session = initSession(subjectID, sessionID, 5, 72, 72, 20, w, windowRect, round(bgColour*255));
     
     previewStim(session);
+
+    runPractice(session);
     
     session = runSession(session);
     
@@ -63,7 +65,9 @@ try
     sessionID = '2';
     session2 = initSession(subjectID, sessionID, 2, 72, 72, 0, w, windowRect, round(bgColour*255));
     
-    previewStim(session);
+    previewStim(session2); % remove when done with piloting
+    
+    runPractice(session2);
     
     session2 = runSession(session2);
     
