@@ -86,6 +86,7 @@ session.timing.timeoutLim = 0.75; % RT timeout
 session.stim.face.folderPath = 'faceStim';
 session.stim.house.folderPath = 'houseStim';
 session.stim.fileExtension = '.pcx';
+session.stim.global_alpha = 0.4;
 
 halfStimSize = 175/2; % visual degree 4.42 X 4.42
 session.stim.location = round([session.windowRect(3:4)/2-halfStimSize, session.windowRect(3:4)/2+halfStimSize]);
