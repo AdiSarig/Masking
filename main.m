@@ -67,7 +67,7 @@ try
     
     previewStim(session2); % remove when done with piloting
     
-    runPractice(session2);
+    runPractice(session2); % overrides session - do not return it!
     
     session2 = runSession(session2);
     

@@ -1,4 +1,4 @@
-function sess = runPractice(session)
+function runPractice(session)
 
 %% prepare practice
 if strcmp(session.sessionID,'1')
@@ -22,6 +22,7 @@ for ind = 1:length(trials)
             trials(ind).stimulusTexture = session.blocks(1).trials(h_trials(1)).stimulusTexture;
     end
 end
+session.blocks(1).trials = trials;
 
 %% Run practice
 Datapixx('SetDoutValues', session.triggers(1).exp_start); % send TTL at the next register write
@@ -29,7 +30,6 @@ Datapixx('RegWr');
 WaitSecs(0.004);
 
 if dispInstructions(session)
-    sess = session;
     disp(strcat('Session aborted at Block: ', string(session.current.blockNum), '/', string(session.totalBlocks), ' Trial:', string(session.current.trialNum), '/', string(session.trialsPerBlock)));
     return
 end
@@ -52,7 +52,6 @@ while session.current.trialNum <= length(trials)
             ListenChar(0);
             ShowCursor;
             Screen('closeall');
-            sess = session;
             return
         end
     end
@@ -69,8 +68,6 @@ end
 
 % restart trial count
 session.current.trialNum = 1;
-
-sess = session;
 
 
 end
